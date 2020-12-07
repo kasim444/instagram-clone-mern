@@ -1,0 +1,47 @@
+.post {
+  max-width: 100%;
+  box-shadow: none;
+  border: 1px solid var(--color-grey);
+}
+
+.post__header .MuiCardHeader-title,
+.post .MuiTypography-body2 > b {
+  font-weight: 600;
+}
+
+.post .MuiCardHeader-avatar {
+  border: double 2px transparent;
+  border-radius: 40px;
+  background-image: linear-gradient(white, white),
+    radial-gradient(circle at top left, var(--color-pink), var(--color-orange));
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+}
+
+.post .MuiAvatar-circle {
+  background-color: var(--color-blue);
+}
+
+.post__media {
+  height: 0;
+  padding-top: 100%;
+}
+
+.post + .post {
+  margin-top: 60px;
+}
+
+.post__comment + .post__comment {
+  margin-top: 8px;
+}
+
+@media screen and (max-width: 768px) {
+  .post {
+    border-radius: 0px !important;
+    border: 0px;
+  }
+
+  .post + .post {
+    margin-top: 15px;
+  }
+}

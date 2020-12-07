@@ -1,0 +1,15 @@
+.body {
+  width: 100%;
+  max-width: var(--max-width);
+  min-height: 100vh;
+  margin: 0px auto;
+  padding: 30px 0px;
+  display: flex;
+  flex-flow: row no-wrap;
+}
+
+@media screen and (max-width: 768px) {
+  .body {
+    padding: 15px 0px;
+  }
+}

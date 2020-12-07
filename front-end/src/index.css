@@ -1,0 +1,21 @@
+:root {
+  --color-white: #ffffff;
+  --color-white-smoke: #fafafa;
+  --color-grey: #dbdbdb;
+  --color-black: #383838;
+  --color-pink: #df3a68;
+  --color-orange: #f89344;
+  --color-blue: #3f51b5;
+  --max-width: 975px;
+}
+* {
+  margin: 0;
+}
+
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica,
+    Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
