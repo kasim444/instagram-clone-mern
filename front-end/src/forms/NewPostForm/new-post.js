@@ -12,6 +12,7 @@ import { db, storage } from '../../firebase/instance'
 import firebase from 'firebase'
 import Alert from '@material-ui/lab/Alert'
 import { useStore } from '../../store/root'
+import API from '../../api'
 
 const NewPostForm = observer(() => {
   const { userStore, uiStore } = useStore()
@@ -50,6 +51,13 @@ const NewPostForm = observer(() => {
           .child(image.name)
           .getDownloadURL()
           .then((url) => {
+
+            API.post('/upload', {
+              caption: caption,
+              user: userStore.userName,
+              image: url,
+            })
+
             // post image inside db
             db.collection('posts').add({
               timestamp: firebase.firestore.FieldValue.serverTimestamp(),

@@ -1,33 +1,29 @@
 import React, { useEffect, useState } from 'react'
 import './posts.css'
 import { Post } from '../../components'
-import { db } from '../../firebase/instance'
+import API from '../../api'
 
 function Posts() {
   const [posts, setPosts] = useState([])
 
   useEffect(() => {
-    db.collection('posts')
-      .orderBy('timestamp', 'desc')
-      .onSnapshot((snapshot) => {
-        setPosts(
-          snapshot.docs.map((doc) => ({
-            id: doc.id,
-            post: doc.data(),
-          }))
-        )
+    const fetchPosts = async () => {
+      await API.get('/sync').then(response => {
+        setPosts(response.data)
       })
+    }
+    fetchPosts()
   }, [])
 
   return (
     <div className='posts'>
-      {posts.map(({ post, id }) => (
+      {posts.map((post) => (
         <Post
-          key={id}
-          postId={id}
-          username={post.username}
+          key={post._id}
+          postId={post._id}
+          username={post.user}
           caption={post.caption}
-          imageUrl={post.imageUrl}
+          imageUrl={post.image}
         />
       ))}
     </div>

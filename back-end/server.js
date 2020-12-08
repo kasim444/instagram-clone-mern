@@ -2,11 +2,18 @@ import express from 'express'
 import cors from 'cors'
 import mongoose from 'mongoose'
 import Pusher from 'pusher'
-import dbModel from './dbModel'
+import dbModel from './dbModel.js'
 
 // app config
 const app = express()
 const port = process.env.PORT || 8080
+const pusher = new Pusher({
+  appId: "1119419",
+  key: "3804a9c7c83fd5cb3e1c",
+  secret: "bd8e525fcc4d7d3d6d51",
+  cluster: "eu",
+  useTLS: true
+});
 
 // middlewares
 app.use(express.json())
@@ -23,6 +30,27 @@ mongoose.connect(connection_url, {
 
 mongoose.connection.once('open', () => {
   console.log('DB Connected')
+
+  const changeStream = mongoose.connection.collection('posts').watch()
+
+  changeStream.on('change', (change) => {
+    console.log('change triggered on pusher')
+    console.log(change)
+    console.log('end of change')
+
+    if (change.operationType === 'insert') {
+      console.log('triggering pusher *** img upload ***')
+
+      const postDetails = change.fullDocument;
+      pusher.trigger('posts', 'inserted', {
+        user: postDetails.user,
+        caption: postDetails.caption,
+        image: postDetails.image
+      })
+    } else {
+      console.log('unknown rigger from pusher')
+    }
+  })
 })
 
 // api routes
