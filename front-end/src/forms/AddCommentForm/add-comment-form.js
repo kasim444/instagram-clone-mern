@@ -15,7 +15,6 @@ const AddCommentForm = observer(({ postId }) => {
 
   const handleShareComment = (e) => {
     e.preventDefault()
-    console.log('comment', comment)
     db.collection('posts').doc(postId).collection('comments').add({
       text: comment,
       username: userStore.userName,

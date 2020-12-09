@@ -1,5 +1,5 @@
 import { useContext, createContext } from 'react'
-import { types, onSnapshot } from 'mobx-state-tree'
+import { types } from 'mobx-state-tree'
 import UserModel from './user-model'
 import UiModel from './ui-model'
 
@@ -19,10 +19,6 @@ export const rootStore = RootModel.create({
     isOpenedModal: false,
     isOpenedBackdrop: false,
   },
-})
-
-onSnapshot(rootStore, (snapshot) => {
-  console.log('Snapshot: ', snapshot)
 })
 
 const RootStoreContext = createContext(null)

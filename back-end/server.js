@@ -8,12 +8,12 @@ import dbModel from './dbModel.js'
 const app = express()
 const port = process.env.PORT || 8080
 const pusher = new Pusher({
-  appId: "1119419",
-  key: "3804a9c7c83fd5cb3e1c",
-  secret: "bd8e525fcc4d7d3d6d51",
-  cluster: "eu",
-  useTLS: true
-});
+  appId: '1119419',
+  key: '3804a9c7c83fd5cb3e1c',
+  secret: 'bd8e525fcc4d7d3d6d51',
+  cluster: 'eu',
+  useTLS: true,
+})
 
 // middlewares
 app.use(express.json())
@@ -29,23 +29,15 @@ mongoose.connect(connection_url, {
 })
 
 mongoose.connection.once('open', () => {
-  console.log('DB Connected')
-
   const changeStream = mongoose.connection.collection('posts').watch()
 
   changeStream.on('change', (change) => {
-    console.log('change triggered on pusher')
-    console.log(change)
-    console.log('end of change')
-
     if (change.operationType === 'insert') {
-      console.log('triggering pusher *** img upload ***')
-
-      const postDetails = change.fullDocument;
+      const postDetails = change.fullDocument
       pusher.trigger('posts', 'inserted', {
         user: postDetails.user,
         caption: postDetails.caption,
-        image: postDetails.image
+        image: postDetails.image,
       })
     } else {
       console.log('unknown rigger from pusher')
@@ -68,13 +60,15 @@ app.post('/upload', (req, res) => {
 })
 
 app.get('/sync', (req, res) => {
-  dbModel.find((err, data) => {
-    if (err) {
-      res.status(500).send(err)
-    } else {
-      res.status(201).send(data)
-    }
-  })
+  dbModel
+    .find((err, data) => {
+      if (err) {
+        res.status(500).send(err)
+      } else {
+        res.status(201).send(data)
+      }
+    })
+    .sort({ _id: -1 })
 })
 
 // listen
